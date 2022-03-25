@@ -1,16 +1,16 @@
 module "asg" {
   source = "terraform-aws-modules/autoscaling/aws"
   # Autoscaling group
-  name                      = "wordpress"
+  name                      = var.name
   min_size                  = var.min_size
   max_size                  = var.max_size
   desired_capacity          = var.desire_size
   wait_for_capacity_timeout = 0
-  health_check_type         = "EC2"
+  health_check_type         = var.health_check_type
   # Launch template
   launch_template_name        = "wordpress"
   launch_template_description = "template-for-wordpress"
-  vpc_zone_identifier         = data.terraform_remote_state.main.outputs.public_subnet_ids
+  vpc_zone_identifier         = var.vpc_subnets                      #data.terraform_remote_state.main.outputs.public_subnet_ids
   update_default_version      = true
   image_id                    = data.aws_ami.ubuntu.id
   instance_type               = "t3.micro"
